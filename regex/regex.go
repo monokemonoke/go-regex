@@ -22,6 +22,11 @@ func slice(str string, from int) string {
 	return str[from:]
 }
 
+// 1文字についてパターンとテキストがマッチするか判定する関数
+//
+// ２文字以上からなるパターンとテキストを入力に与えられた時
+// 出力はパターンとテキストが完全一致する場合のみ true を返し
+// ワイルドカードを考慮しない
 func matchOne(pattern, text string) bool {
 	// パターンが空ならどんなテキストでもマッチする
 	if len(pattern) == 0 {
@@ -41,6 +46,7 @@ func matchOne(pattern, text string) bool {
 	return pattern == text
 }
 
+// 複数文字からなるパターンとテキストについてマッチするか判定する関数
 func match(pattern, text string) bool {
 	// パターンが空ならどんなテキストでもマッチさせる
 	if len(pattern) == 0 {
@@ -65,6 +71,7 @@ func match(pattern, text string) bool {
 	return matchOne(getChar(pattern, 0), getChar(text, 0)) && match(slice(pattern, 1), slice(text, 1))
 }
 
+// ?マークについてのマッチを判定する関数
 func matchQuestion(pattern, text string) bool {
 	// ?の前の文字以外は一致するパターン
 	notUsed := match(pattern[2:], text)
@@ -78,6 +85,7 @@ func matchQuestion(pattern, text string) bool {
 	return notUsed || used
 }
 
+// *マークについてのマッチを判定する関数
 func matchStar(pattern, text string) bool {
 	// 0個一致する場合
 	notUsed := match(slice(pattern, 2), text)
@@ -88,7 +96,8 @@ func matchStar(pattern, text string) bool {
 	return notUsed || used
 }
 
-func search(pattern, text string) bool {
+// 正規表現のパターンと与えられたテキストがマッチするか判定する関数
+func Search(pattern, text string) bool {
 	// パターンが文字列の先頭を含んでいている場合
 	if getChar(pattern, 0) == "^" {
 		return match(slice(pattern, 1), text)

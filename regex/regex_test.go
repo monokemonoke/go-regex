@@ -125,7 +125,7 @@ func TestSearch(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		actual := search(test.pattern, test.text)
+		actual := Search(test.pattern, test.text)
 		if test.expect != actual {
 			t.Errorf("Expect %t but got %t\n", test.expect, actual)
 			t.Errorf("pattern %s, text %s\n", test.pattern, test.text)
@@ -162,7 +162,7 @@ func TestMatchQuestion(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		actual := search(test.pattern, test.text)
+		actual := Search(test.pattern, test.text)
 		if test.expect != actual {
 			t.Errorf("Expect %t but got %t\n", test.expect, actual)
 			t.Errorf("pattern %s, text %s\n", test.pattern, test.text)
@@ -199,7 +199,7 @@ func TestMatchStar(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		actual := search(test.pattern, test.text)
+		actual := Search(test.pattern, test.text)
 		if test.expect != actual {
 			t.Errorf("Expect %t but got %t\n", test.expect, actual)
 			t.Errorf("pattern %s, text %s\n", test.pattern, test.text)
