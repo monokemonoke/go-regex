@@ -169,3 +169,40 @@ func TestMatchQuestion(t *testing.T) {
 		}
 	}
 }
+
+func TestMatchStar(t *testing.T) {
+	tests := []struct {
+		pattern string
+		text    string
+		expect  bool
+	}{
+		{
+			pattern: "a*",
+			text:    "",
+			expect:  true,
+		},
+		{
+			pattern: "a*",
+			text:    "a",
+			expect:  true,
+		},
+		{
+			pattern: "a*",
+			text:    "aa",
+			expect:  true,
+		},
+		{
+			pattern: "a*b",
+			text:    "aaaaaaaab",
+			expect:  true,
+		},
+	}
+
+	for _, test := range tests {
+		actual := search(test.pattern, test.text)
+		if test.expect != actual {
+			t.Errorf("Expect %t but got %t\n", test.expect, actual)
+			t.Errorf("pattern %s, text %s\n", test.pattern, test.text)
+		}
+	}
+}

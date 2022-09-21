@@ -9,6 +9,19 @@ func getChar(str string, index int) string {
 	return str[index : index+1]
 }
 
+// 指定された位置以降の部分文字列を返す関数
+func slice(str string, from int) string {
+	if from < 0 {
+		return str
+	}
+
+	if from >= len(str) {
+		return ""
+	}
+
+	return str[from:]
+}
+
 func matchOne(pattern, text string) bool {
 	// パターンが空ならどんなテキストでもマッチする
 	if len(pattern) == 0 {
@@ -44,6 +57,11 @@ func match(pattern, text string) bool {
 		return matchQuestion(pattern, text)
 	}
 
+	// パターンの2文字目に*がある場合
+	if getChar(pattern, 1) == "*" {
+		return matchStar(pattern, text)
+	}
+
 	return matchOne(getChar(pattern, 0), getChar(text, 0)) && match(pattern[1:], text[1:])
 }
 
@@ -60,6 +78,16 @@ func matchQuestion(pattern, text string) bool {
 	return notUsed || used
 }
 
+func matchStar(pattern, text string) bool {
+	// 0個一致する場合
+	notUsed := match(slice(pattern, 2), text)
+
+	// *以前の文字が一致する場合
+	used := matchOne(getChar(pattern, 0), getChar(text, 0)) && match(pattern, slice(text, 1))
+
+	return notUsed || used
+}
+
 func search(pattern, text string) bool {
 	// パターンが文字列の先頭を含んでいている場合
 	if pattern[0:1] == "^" {
@@ -69,11 +97,11 @@ func search(pattern, text string) bool {
 	// テキスト全てのスタートポイントに関してパターンの一致を検索
 	for i := range text {
 		// もしどこかの位置でマッチしたらtrueを返す
-		if match(pattern, text[i:]) {
+		if match(pattern, slice(text, i)) {
 			return true
 		}
 	}
 
-	// どの位置でもマッチしなければfalseを返す
-	return false
+	// textが空文字の場合を検索して、その結果を返す
+	return match(pattern, text)
 }
