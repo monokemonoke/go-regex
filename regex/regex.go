@@ -95,13 +95,5 @@ func search(pattern, text string) bool {
 	}
 
 	// テキスト全てのスタートポイントに関してパターンの一致を検索
-	for i := range text {
-		// もしどこかの位置でマッチしたらtrueを返す
-		if match(pattern, slice(text, i)) {
-			return true
-		}
-	}
-
-	// textが空文字の場合を検索して、その結果を返す
-	return match(pattern, text)
+	return match(".*"+pattern, text)
 }
