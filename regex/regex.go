@@ -53,7 +53,7 @@ func match(pattern, text string) bool {
 	}
 
 	// パターンの2文字目に?がある場合
-	if len(pattern) > 2 && pattern[1:2] == "?" {
+	if getChar(pattern, 1) == "?" {
 		return matchQuestion(pattern, text)
 	}
 
@@ -62,7 +62,7 @@ func match(pattern, text string) bool {
 		return matchStar(pattern, text)
 	}
 
-	return matchOne(getChar(pattern, 0), getChar(text, 0)) && match(pattern[1:], text[1:])
+	return matchOne(getChar(pattern, 0), getChar(text, 0)) && match(slice(pattern, 1), slice(text, 1))
 }
 
 func matchQuestion(pattern, text string) bool {
@@ -72,7 +72,7 @@ func matchQuestion(pattern, text string) bool {
 	// ?の前の文字とも一致するパターン
 	used := false
 	if len(pattern) >= 2 {
-		used = matchOne(getChar(pattern, 0), getChar(text, 0)) && match(pattern[2:], text[1:])
+		used = matchOne(getChar(pattern, 0), getChar(text, 0)) && match(slice(pattern, 2), slice(text, 1))
 	}
 
 	return notUsed || used
@@ -90,8 +90,8 @@ func matchStar(pattern, text string) bool {
 
 func search(pattern, text string) bool {
 	// パターンが文字列の先頭を含んでいている場合
-	if pattern[0:1] == "^" {
-		return match(pattern[1:], text)
+	if getChar(pattern, 0) == "^" {
+		return match(slice(pattern, 1), text)
 	}
 
 	// テキスト全てのスタートポイントに関してパターンの一致を検索
