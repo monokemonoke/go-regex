@@ -32,3 +32,21 @@ func match(pattern, text string) bool {
 
 	return matchOne(pattern[0:1], text[0:1]) && match(pattern[1:], text[1:])
 }
+
+func search(pattern, text string) bool {
+	// パターンが文字列の先頭を含んでいている場合
+	if pattern[0:1] == "^" {
+		return match(pattern[1:], text)
+	}
+
+	// テキスト全てのスタートポイントに関してパターンの一致を検索
+	for i := range text {
+		// もしどこかの位置でマッチしたらtrueを返す
+		if match(pattern, text[i:]) {
+			return true
+		}
+	}
+
+	// どの位置でもマッチしなければfalseを返す
+	return false
+}

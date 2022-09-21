@@ -90,3 +90,45 @@ func TestMatch(t *testing.T) {
 		}
 	}
 }
+
+func TestSearch(t *testing.T) {
+	tests := []struct {
+		pattern string
+		text    string
+		expect  bool
+	}{
+		{
+			pattern: "^abc",
+			text:    "abc",
+			expect:  true,
+		},
+		{
+			pattern: "^abc",
+			text:    "bbc",
+			expect:  false,
+		},
+		{
+			pattern: "abc",
+			text:    "abc",
+			expect:  true,
+		},
+		{
+			pattern: "abc",
+			text:    "kbc",
+			expect:  false,
+		},
+		{
+			pattern: "abc",
+			text:    "aabc",
+			expect:  true,
+		},
+	}
+
+	for _, test := range tests {
+		actual := search(test.pattern, test.text)
+		if test.expect != actual {
+			t.Errorf("Expect %t but got %t\n", test.expect, actual)
+			t.Errorf("pattern %s, text %s\n", test.pattern, test.text)
+		}
+	}
+}
