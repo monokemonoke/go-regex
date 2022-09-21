@@ -25,5 +25,10 @@ func match(pattern, text string) bool {
 		return true
 	}
 
+	// パターンが文字列の末尾で, テキストも文字列の末尾ならマッチさせる
+	if pattern == "$" && text == "" {
+		return true
+	}
+
 	return matchOne(pattern[0:1], text[0:1]) && match(pattern[1:], text[1:])
 }

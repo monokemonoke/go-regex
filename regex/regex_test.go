@@ -70,6 +70,16 @@ func TestMatch(t *testing.T) {
 			text:    "abcd",
 			expect:  true,
 		},
+		{
+			pattern: "abc$",
+			text:    "abc",
+			expect:  true,
+		},
+		{
+			pattern: "abc$",
+			text:    "abcd",
+			expect:  false,
+		},
 	}
 
 	for _, test := range tests {
